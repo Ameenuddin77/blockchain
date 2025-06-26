@@ -14,6 +14,8 @@ interface Quiz {
   attempts: number;
   maxAttempts: number;
   completed: boolean;
+  creator?: string;
+  createdAt?: string;
 }
 
 interface QuizCardProps {
@@ -79,6 +81,12 @@ const QuizCard: React.FC<QuizCardProps> = ({
               Pending
             </Badge>
           )}
+
+          {quiz.creator && (
+            <Badge variant="outline" className="border-blue-500/30 text-blue-400">
+              Created by you
+            </Badge>
+          )}
         </div>
       </CardHeader>
       
@@ -91,6 +99,15 @@ const QuizCard: React.FC<QuizCardProps> = ({
               {quiz.attempts}/{quiz.maxAttempts}
             </span>
           </div>
+          
+          {quiz.createdAt && (
+            <div className="flex justify-between text-sm">
+              <span className="text-blue-200">Created:</span>
+              <span className="text-white text-xs">
+                {new Date(quiz.createdAt).toLocaleDateString()}
+              </span>
+            </div>
+          )}
           
           {/* Warning for max attempts */}
           {!hasAttemptsLeft && !quiz.completed && (

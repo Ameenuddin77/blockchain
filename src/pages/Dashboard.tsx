@@ -17,26 +17,30 @@ interface Quiz {
   id: string;
   title: string;
   description: string;
-  questions: number;
+  questions: any[];
   difficulty: 'Easy' | 'Medium' | 'Hard';
   attempts: number;
   maxAttempts: number;
   completed: boolean;
+  creator?: string;
+  createdAt?: string;
+  timeLimit?: number;
 }
 
 const Dashboard = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const navigate = useNavigate();
 
   // Sample quiz data
-  const [quizzes] = useState<Quiz[]>([
+  const sampleQuizzes: Quiz[] = [
     {
       id: '1',
       title: 'Blockchain Fundamentals',
       description: 'Test your knowledge about blockchain basics and concepts',
-      questions: 10,
+      questions: [],
       difficulty: 'Easy',
       attempts: 0,
       maxAttempts: 1,
@@ -46,7 +50,7 @@ const Dashboard = () => {
       id: '2',
       title: 'Smart Contracts Deep Dive',
       description: 'Advanced quiz on smart contract development and deployment',
-      questions: 15,
+      questions: [],
       difficulty: 'Hard',
       attempts: 1,
       maxAttempts: 1,
@@ -56,13 +60,13 @@ const Dashboard = () => {
       id: '3',
       title: 'DeFi Protocols',
       description: 'Understanding decentralized finance and its protocols',
-      questions: 12,
+      questions: [],
       difficulty: 'Medium',
       attempts: 0,
       maxAttempts: 1,
       completed: false
     }
-  ]);
+  ];
 
   useEffect(() => {
     // Check if user is logged in
@@ -85,7 +89,27 @@ const Dashboard = () => {
       setIsWalletConnected(true);
       setWalletAddress(storedWalletAddress);
     }
+
+    // Load created quizzes from localStorage
+    loadQuizzes();
   }, [navigate]);
+
+  const loadQuizzes = () => {
+    const createdQuizzes = JSON.parse(localStorage.getItem('createdQuizzes') || '[]');
+    
+    // Transform created quizzes to match our Quiz interface
+    const transformedCreatedQuizzes = createdQuizzes.map((quiz: any) => ({
+      ...quiz,
+      questions: quiz.questions || [],
+      attempts: 0,
+      maxAttempts: 1,
+      completed: false
+    }));
+
+    // Combine sample quizzes with created quizzes
+    const allQuizzes = [...sampleQuizzes, ...transformedCreatedQuizzes];
+    setQuizzes(allQuizzes);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('userLoggedIn');
@@ -190,7 +214,7 @@ const Dashboard = () => {
                   <div className="w-full bg-white/20 rounded-full h-2">
                     <div 
                       className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${(completedQuizzes / totalQuizzes) * 100}%` }}
+                      style={{ width: `${totalQuizzes > 0 ? (completedQuizzes / totalQuizzes) * 100 : 0}%` }}
                     ></div>
                   </div>
                 </div>
@@ -266,7 +290,10 @@ const Dashboard = () => {
                 {quizzes.map((quiz) => (
                   <QuizCard
                     key={quiz.id}
-                    quiz={quiz}
+                    quiz={{
+                      ...quiz,
+                      questions: Array.isArray(quiz.questions) ? quiz.questions.length : 0
+                    }}
                     isWalletConnected={isWalletConnected}
                     onAttempt={() => handleQuizAction('attempt', quiz.id)}
                     onEvaluate={() => handleQuizAction('evaluate', quiz.id)}
