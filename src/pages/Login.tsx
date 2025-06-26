@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, EyeOff, Brain, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from "sonner";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,34 +31,79 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate login process
+    // Get stored users from localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    
+    // Check if user exists with matching credentials
+    const user = storedUsers.find((u: any) => 
+      u.email === formData.email && u.password === formData.password
+    );
+
     setTimeout(() => {
-      localStorage.setItem('userLoggedIn', 'true');
-      localStorage.setItem('userData', JSON.stringify({
-        name: formData.name || 'Quiz Master',
-        email: formData.email
-      }));
-      setIsLoading(false);
-      navigate('/dashboard');
+      if (user) {
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userData', JSON.stringify({
+          name: user.name,
+          email: user.email
+        }));
+        setIsLoading(false);
+        toast.success('Login successful!');
+        navigate('/dashboard');
+      } else {
+        setIsLoading(false);
+        toast.error('Invalid email or password. Please sign up first if you don\'t have an account.');
+      }
     }, 1500);
   };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      toast.error('Passwords do not match!');
       return;
     }
+
+    if (formData.password.length < 6) {
+      toast.error('Password should be at least 6 characters long!');
+      return;
+    }
+
     setIsLoading(true);
     
-    // Simulate signup process
+    // Get existing users
+    const storedUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    
+    // Check if user already exists
+    const existingUser = storedUsers.find((u: any) => u.email === formData.email);
+    
     setTimeout(() => {
+      if (existingUser) {
+        setIsLoading(false);
+        toast.error('User with this email already exists! Please login instead.');
+        return;
+      }
+
+      // Add new user to stored users
+      const newUser = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        createdAt: new Date().toISOString()
+      };
+      
+      storedUsers.push(newUser);
+      localStorage.setItem('registeredUsers', JSON.stringify(storedUsers));
+      
+      // Auto login after signup
       localStorage.setItem('userLoggedIn', 'true');
       localStorage.setItem('userData', JSON.stringify({
         name: formData.name,
         email: formData.email
       }));
+      
       setIsLoading(false);
+      toast.success('Account created successfully!');
       navigate('/dashboard');
     }, 1500);
   };
@@ -85,9 +131,9 @@ const Login = () => {
 
         <Card className="backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl">
           <CardHeader>
-            <CardTitle className="text-2xl text-center text-white">Welcome Back</CardTitle>
+            <CardTitle className="text-2xl text-center text-white">Welcome</CardTitle>
             <CardDescription className="text-center text-blue-200">
-              Enter your credentials to access your account
+              Create an account or login to start quizzing
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -185,11 +231,12 @@ const Login = () => {
                       id="signup-password"
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      placeholder="Create a password"
+                      placeholder="Create a password (min 6 characters)"
                       value={formData.password}
                       onChange={handleInputChange}
                       className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
                       required
+                      minLength={6}
                     />
                   </div>
                   <div className="space-y-2">
