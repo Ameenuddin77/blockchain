@@ -22,17 +22,18 @@ A blockchain-integrated quiz platform designed to engage users in Roman Urdu! Bu
 
 ## 📁 Project Structure
 
+```
 roman-urdu-vibes-bro/
-├── public/ # Static assets (favicon, etc.)
+├── public/              # Static assets (favicon, etc.)
 ├── src/
-│ ├── components/ # UI and functional components
-│ ├── hooks/ # Custom React hooks
-│ ├── pages/ # App routes (Dashboard, Login, etc.)
-│ └── main.tsx # App entry point
+│   ├── components/      # UI and functional components
+│   ├── hooks/           # Custom React hooks
+│   ├── pages/           # App routes (Dashboard, Login, etc.)
+│   └── main.tsx         # App entry point
 ├── index.html
 ├── tailwind.config.ts
 ├── vite.config.ts
-
+```
 
 ---
 
@@ -49,58 +50,69 @@ cd roman-urdu-vibes-bro
 npm install
 # or
 bun install
+```
 
-💻 Running the App
-bash
-Copy
-Edit
+---
+
+## 💻 Running the App
+
+```bash
 # Start the development server
 npm run dev
 # or
 bun dev
-Visit http://localhost:5173 to open the app in your browser.
+```
 
-🔐 Wallet Integration
-This project includes a wallet connection feature to interact with blockchain-based features. Make sure you have MetaMask or any Web3-compatible wallet installed in your browser.
+Visit `http://localhost:5173` to open the app in your browser.
 
-📦 Tech Stack
-React (with TypeScript)
+---
 
-Tailwind CSS
+## 🔐 Wallet Integration
 
-Vite
+This project includes a wallet connection feature to interact with blockchain-based features. Make sure you have **MetaMask** or any Web3-compatible wallet installed in your browser.
 
-Shadcn/UI
+---
 
-Bun (optional)
+## 📦 Tech Stack
 
-Ethers.js or similar (assumed for blockchain support)
+- **React** (with TypeScript)
+- **Tailwind CSS**
+- **Vite**
+- **Shadcn/UI**
+- **Bun** (optional)
+- **Ethers.js** or similar (assumed for blockchain support)
 
-🧪 Pages Included
-✅ Login.tsx — Authentication
+---
 
-🧠 CreateQuiz.tsx — Create quizzes
+## 🧪 Pages Included
 
-🎯 QuizAttempt.tsx — Take quizzes
+- ✅ `Login.tsx` — Authentication
+- 🧠 `CreateQuiz.tsx` — Create quizzes
+- 🎯 `QuizAttempt.tsx` — Take quizzes
+- 📊 `Dashboard.tsx` — Overview page
+- ❌ `NotFound.tsx` — 404 fallback
 
-📊 Dashboard.tsx — Overview page
+---
 
-❌ NotFound.tsx — 404 fallback
+## 📄 License
 
-📄 License
-This project is licensed under the MIT License.
-© 2025 Ameenuddin77
+This project is licensed under the MIT License.  
+© 2025 [Ameenuddin77](https://github.com/Ameenuddin77)
 
-🤝 Contributing
+---
+
+## 🤝 Contributing
+
 Pull requests are welcome! To contribute:
 
-Fork the repository
+1. Fork the repository
+2. Create your branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature-name`)
+5. Open a Pull Request
 
-Create your branch (git checkout -b feature-name)
+---
 
-Commit your changes (git commit -m 'Add new feature')
+## 📬 Contact
 
-Push to the branch (git push origin feature-name)
-
-Open a Pull Request
-
+For issues, suggestions, or collaborations, feel free to reach out via GitHub: [@Ameenuddin77](https://github.com/Ameenuddin77")
