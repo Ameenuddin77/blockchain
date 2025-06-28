@@ -1,4 +1,4 @@
-# Roman Urdu Vibes ✨🧠
+# Quiz App - Blockchain ✨🧠
 
 A blockchain-integrated quiz platform designed to engage users in Roman Urdu! Built with React, TypeScript, Tailwind CSS, and Vite.
 
