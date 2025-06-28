@@ -1,5 +1,9 @@
 # Welcome to our Blockchain Project
 ## Project info
+# GROUP MEMBERS:
+# Ameen uddin cs211066
+# Hasnain Ashraf cs211115
+# Muhammad Fariz Farooqui cs211080
 
 **URL**: https://lovable.dev/projects/53da5af8-d9e2-4105-b5e0-c21a0f971c28
 
